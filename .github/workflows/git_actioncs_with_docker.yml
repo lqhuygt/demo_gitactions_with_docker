@@ -1,0 +1,25 @@
+
+name: Python application CI with Docker
+
+on: 
+    push:
+    pull_request:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build webapp
+      run: |
+        docker build ./ -t huylq1999/github_actions_with_docker
+    
+    - name: docker push
+      run: |
+        docker push huylq1999/github_actions_with_docker
